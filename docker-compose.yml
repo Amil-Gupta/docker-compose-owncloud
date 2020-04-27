@@ -1,0 +1,38 @@
+version: '3.1'
+
+services:
+
+  owncloud:
+    image: owncloud
+    container_name: oc
+    restart: always
+    depends_on:
+      - mysqldb
+    environment:
+      - OWNCLOUD_DB_TYPE=mysql
+      - OWNCLOUD_DB_NAME=ocd
+      - OWNCLOUD_DB_USERNAME=qwert
+      - OWNCLOUD_DB_PASSWORD=passabc
+      - OWNCLOUD_DB_HOST=mysqldb
+      - OWNCLOUD_MYSQL_UTF8MB4=true
+    volumes:
+      - ocv:/var/www/html
+    ports:
+      - "8080:80"
+
+  mysqldb:
+    image: mysql:5.7
+    container_name: msl
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: passxyz
+      MYSQL_USER: qwert
+      MYSQL_PASSWORD: passabc
+      MYSQL_DATABASE: ocd
+    volumes:
+      - msql:/var/lib/mysql
+      - files:/mnt/data
+volumes:
+  msql:
+  ocv:
+  files:
